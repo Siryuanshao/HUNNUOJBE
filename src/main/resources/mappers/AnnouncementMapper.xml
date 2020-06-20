@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "mybatis-3-mapper.dtd">
+<mapper namespace="cn.edu.hunnu.acm.dao.AnnouncementMapper">
+    <select id="queryCarouselList" resultType="java.lang.String">
+        select content from announcement where newsType = 1
+    </select>
+    <select id="queryHotspotList" resultType="cn.edu.hunnu.acm.model.Announcement">
+        select newsId, title, updateTime from announcement where newsType = #{newsType} order by newsId DESC limit 4
+    </select>
+    <select id="queryAnnouncementById" resultType="cn.edu.hunnu.acm.model.Announcement">
+        select * from announcement where newsId = #{newsId}
+    </select>
+    <select id="queryAnnouncementCount" resultType="java.lang.Integer">
+        select count(*) from announcement where newsType = #{newsType}
+    </select>
+    <select id="queryAnnouncementList" resultType="cn.edu.hunnu.acm.model.Announcement">
+        select newsId, title, creator, createTime, updateTime from announcement where newsType = #{newsType}
+        order by newsId DESC limit #{offset}, #{limit}
+    </select>
+    <select id="queryContestAnnouncementList" resultType="cn.edu.hunnu.acm.model.Announcement">
+        select newsId, title, creator, createTime, updateTime, content from announcement where newsType = 0 and contestId = #{contestId}
+        order by newsId DESC
+    </select>
+    <insert id="insertAnnouncement"
+            keyColumn="newsId"
+            keyProperty="newsId"
+            parameterType="cn.edu.hunnu.acm.model.Announcement">
+        insert into announcement (newsType, contestId, creator, title, content, createTime, updateTime)
+        values (#{newsType}, #{contestId}, #{creator}, #{title}, #{content}, NOW(), NOW())
+    </insert>
+    <update id="updateAnnouncement" parameterType="cn.edu.hunnu.acm.model.Announcement">
+        update announcement
+        <trim prefix="set" suffixOverrides=",">
+            <if test="newsId!=null">newsId = #{newsId},</if>
+            <if test="title!=null">title = #{title},</if>
+            <if test="content!=null">content = #{content},</if>
+            updateTime = NOW(),
+        </trim>
+        where newsId = #{newsId}
+    </update>
+</mapper>

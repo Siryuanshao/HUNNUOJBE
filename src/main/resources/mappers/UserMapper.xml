@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "mybatis-3-mapper.dtd">
+<mapper namespace="cn.edu.hunnu.acm.dao.UserMapper">
+    <select id="queryUserById" resultType="cn.edu.hunnu.acm.model.User">
+        select * from user where userId = #{userId}
+    </select>
+    <select id="queryUserRank" resultType="java.lang.Integer">
+        select count(*) + 1 from user where accept &gt; (select accept from user where userId = #{userId})
+    </select>
+    <select id="queryUserCount" resultType="java.lang.Integer">
+        select count(*) from user
+    </select>
+    <select id="queryRankList" resultType="cn.edu.hunnu.acm.model.User">
+        select * from user order by accept DESC, submit ASC, userId ASC limit #{offset},#{limit}
+    </select>
+    <insert id="insertUser"
+            keyColumn="userId"
+            keyProperty="userId"
+            parameterType="cn.edu.hunnu.acm.model.User">
+        insert into user (userId, userName, password, createTime, lastLogin)
+        values (#{userId}, #{userName}, #{password}, NOW(), NOW())
+    </insert>
+    <update id="updateLastLogin">
+        update user set lastLogin = NOW() where userId = #{userId}
+    </update>
+    <update id="updateUserProfile" parameterType="cn.edu.hunnu.acm.model.User">
+        update user
+        <trim prefix="set" suffixOverrides=",">
+            <if test="userId!=null">userId = #{userId},</if>
+            <if test="userName!=null">userName = #{userName},</if>
+            <if test="password!=null">password = #{password},</if>
+            <if test="school!=null">school = #{school},</if>
+            <if test="grade!=null">grade = #{grade},</if>
+            <if test="email!=null">email = #{email},</if>
+            <if test="sex!=null">sex = #{sex},</if>
+            <if test="whatUp!=null">whatUp = #{whatUp}</if>
+            <if test="avatar!=null">avatar = #{avatar},</if>
+        </trim>
+        where userId = #{userId}
+    </update>
+    <update id="updateUserAuth">
+        update user
+        <trim prefix="set" suffixOverrides=",">
+            <if test="newPassword!=null">password = #{newPassword},</if>
+            <if test="newEmail!=null">email = #{newEmail},</if>
+        </trim>
+        where userId = #{userId} and password = #{password}
+    </update>
+    <update id="updateUserRole">
+        update user set userType = #{userType} where userId = #{userId}
+    </update>
+    <update id="updateUserSubmit">
+        update user
+        <trim prefix="set" suffixOverrides=",">
+            <if test="accept!=null">accept = (select count(distinct problemId) from submission where userId = #{userId} and result = 2 and contestId = -1),</if>
+            <if test="submit!=null">submit = (select count(*) from submission where userId = #{userId} and contestId = -1),</if>
+        </trim>
+        where userId = #{userId}
+    </update>
+</mapper>

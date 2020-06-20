@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "mybatis-3-mapper.dtd">
+<mapper namespace="cn.edu.hunnu.acm.dao.ContestMapper">
+    <select id="queryContestById" resultType="cn.edu.hunnu.acm.model.Contest">
+        select * from contest where contestId = #{contestId}
+    </select>
+    <select id="queryContestCount" resultType="java.lang.Integer">
+        select count(*) from contest
+        <if test="keyword!=null and keyword!=''">
+            where (contestId like #{keyword}"%" or title like "%"#{keyword}"%")
+        </if>
+    </select>
+    <select id="queryContestList" resultType="cn.edu.hunnu.acm.model.Contest">
+        select * from contest
+        <if test="keyword!=null and keyword!=''">
+            where (contestId like #{keyword}"%" or title like "%"#{keyword}"%")
+        </if>
+        order by contestId DESC limit #{offset}, #{limit}
+    </select>
+    <insert id="insertContest"
+            keyColumn="contestId"
+            keyProperty="contestId"
+            parameterType="cn.edu.hunnu.acm.model.Contest">
+        insert into contest (title, startTime, endTime, type, ext)
+        values (#{title}, #{startTime}, #{endTime}, #{type}, #{ext})
+    </insert>
+    <update id="updateContest" parameterType="cn.edu.hunnu.acm.model.Contest">
+        update contest
+        <trim prefix="set" suffixOverrides=",">
+            <if test="title!=null">title = #{title},</if>
+            <if test="startTime!=null">startTime = #{startTime},</if>
+            <if test="endTime!=null">endTime = #{endTime},</if>
+            <if test="type!=null">type = #{type},</if>
+            <if test="ext!=null">ext = #{ext},</if>
+        </trim>
+        where contestId = #{contestId}
+    </update>
+</mapper>

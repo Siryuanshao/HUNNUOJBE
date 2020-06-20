@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <properties resource="db.properties" />
+    <environments default="development">
+        <environment id="development">
+            <transactionManager type="JDBC" />
+            <dataSource type="POOLED">
+                <property name="driver" value="${driver}" />
+                <property name="url" value="${url}" />
+                <property name="username" value="${username}" />
+                <property name="password" value="${password}" />
+                <property name="poolPingQuery" value="SELECT 1" />
+                <property name="poolPingEnabled" value="true" />
+                <property name="poolPingConnectionsNotUsedFor" value="3600000"/>
+                <property name="poolMaximumActiveConnections" value="50" />
+                <property name="poolMaximumIdleConnections" value="5" />
+                <property name="poolMaximumCheckoutTime" value="10000" />
+                <property name="poolTimeToWait" value="10000"/>
+            </dataSource>
+        </environment>
+    </environments>
+    <mappers>
+        <mapper resource="mappers/UserMapper.xml" />
+        <mapper resource="mappers/ProblemMapper.xml" />
+        <mapper resource="mappers/SubmissionMapper.xml" />
+        <mapper resource="mappers/AnnouncementMapper.xml" />
+        <mapper resource="mappers/ContestMapper.xml" />
+    </mappers>
+</configuration>

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "mybatis-3-mapper.dtd">
+<mapper namespace="cn.edu.hunnu.acm.dao.ProblemMapper">
+    <select id="queryProblemById"  resultType="cn.edu.hunnu.acm.model.Problem">
+        select * from problem where problemId = #{problemId} and contestId = #{contestId}
+    </select>
+    <select id="checkProblemExist" resultType="cn.edu.hunnu.acm.model.Problem">
+        select timeLimit, memoryLimit, isSpj from problem where problemId = #{problemId} and contestId = #{contestId}
+    </select>
+    <select id="queryProblemCount" resultType="java.lang.Integer">
+        select count(*) from problem where contestId = -1
+        <if test="keyword!=null and keyword!=''">
+            and (problemId like #{keyword}"%" or title like "%"#{keyword}"%")
+        </if>
+    </select>
+    <select id="queryProblemList" resultType="cn.edu.hunnu.acm.model.Problem">
+        select * from problem where contestId = -1
+        <if test="keyword!=null and keyword!=''">
+            and (problemId like #{keyword}"%" or title like "%"#{keyword}"%")
+        </if>
+        order by problemId ASC limit #{offset},#{limit}
+    </select>
+    <select id="queryContestProblemList" resultType="cn.edu.hunnu.acm.model.Problem">
+        select * from problem where contestId = #{contestId}
+    </select>
+    <insert id="insertProblem"
+            keyColumn="problemId"
+            keyProperty="problemId"
+            parameterType="cn.edu.hunnu.acm.model.Problem">
+        insert into problem (problemId, contestId, title, timeLimit, memoryLimit,
+                            description, inputDesc, outputDesc,
+                            inputSample, outputSample, hint, source, isSpj)
+                    values (#{problemId}, #{contestId}, #{title}, #{timeLimit}, #{memoryLimit},
+                            #{description}, #{inputDesc}, #{outputDesc},
+                            #{inputSample}, #{outputSample}, #{hint}, #{source}, #{isSpj})
+    </insert>
+    <update id="updateProblem" parameterType="cn.edu.hunnu.acm.model.Problem">
+        update problem
+        <trim prefix="set" suffixOverrides=",">
+            <if test="problemId!=null">problemId = #{problemId},</if>
+            <if test="title!=null">title = #{title},</if>
+            <if test="memoryLimit!=null">memoryLimit = #{memoryLimit},</if>
+            <if test="description!=null">description = #{description},</if>
+            <if test="inputDesc!=null">inputDesc = #{inputDesc},</if>
+            <if test="outputDesc!=null">outputDesc = #{outputDesc},</if>
+            <if test="inputSample!=null">inputSample = #{inputSample},</if>
+            <if test="outputSample!=null">outputSample = #{outputSample},</if>
+            <if test="hint!=null">hint = #{hint},</if>
+            <if test="source!=null">source = #{source},</if>
+            <if test="isSpj!=null">isSpj = #{isSpj},</if>
+        </trim>
+        where problemId = #{problemId} and contestId = #{contestId}
+    </update>
+    <update id="updateProblemSubmit">
+        update problem
+        <trim prefix="set" suffixOverrides=",">
+            <if test="accept!=null">accept = (select count(*) from submission where contestId = #{contestId} and problemId = #{problemId} and result = 2),</if>
+            <if test="submit!=null">submit = (select count(*) from submission where contestId = #{contestId} and problemId = #{problemId}),</if>
+        </trim>
+        where problemId = #{problemId} and contestId = #{contestId}
+    </update>
+</mapper>

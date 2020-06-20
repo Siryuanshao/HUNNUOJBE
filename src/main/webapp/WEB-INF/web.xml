@@ -1,0 +1,47 @@
+<!DOCTYPE web-app PUBLIC
+ "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
+ "http://java.sun.com/dtd/web-app_2_3.dtd" >
+
+<web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd"
+         version="4.0">
+  <display-name>Archetype Created Web Application</display-name>
+  <session-config>
+    <session-timeout>1440</session-timeout> <!-- 1440 minutes = 24 hours -->
+    <cookie-config>
+      <max-age>1296000</max-age> <!-- 1296000 seconds = 15 days -->
+    </cookie-config>
+  </session-config>
+  <servlet>
+    <servlet-name>Dispatcher</servlet-name>
+    <servlet-class>cn.edu.hunnu.acm.framework.DispatcherServlet</servlet-class>
+    <init-param>
+      <param-name>contextConfigLocation</param-name>
+      <param-value>classpath:application.properties</param-value>
+    </init-param>
+    <load-on-startup>1</load-on-startup>
+    <multipart-config>
+      <location>/tmp</location>
+      <max-file-size>2097152</max-file-size>
+      <max-request-size>2097152</max-request-size>
+      <file-size-threshold>131072</file-size-threshold>
+    </multipart-config>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>Dispatcher</servlet-name>
+    <url-pattern>/</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <servlet-name>ErrorHandler</servlet-name>
+    <servlet-class>cn.edu.hunnu.acm.servlet.ErrorHandler</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ErrorHandler</servlet-name>
+    <url-pattern>/errorHandler</url-pattern>
+  </servlet-mapping>
+  <error-page>
+    <exception-type>java.lang.Throwable</exception-type>
+    <location>/errorHandler</location>
+  </error-page>
+</web-app>

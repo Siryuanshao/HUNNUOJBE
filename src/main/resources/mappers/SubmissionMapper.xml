@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "mybatis-3-mapper.dtd">
+<mapper namespace="cn.edu.hunnu.acm.dao.SubmissionMapper">
+    <select id="querySubmissionById" resultType="cn.edu.hunnu.acm.model.Submission">
+        select * from submission where runId = #{runId}
+    </select>
+    <select id="querySubmissionCount" resultType="java.lang.Integer">
+        select count(*) from submission
+        <where>
+            <if test="contestId!=null">
+                and contestId = #{contestId}
+            </if>
+            <if test="problemId!=null">
+                and problemId = #{problemId}
+            </if>
+            <if test="userId!=null and userId!=''">
+                and userId = #{userId}
+            </if>
+            <if test="result!=null">
+                and result = #{result}
+            </if>
+            <if test="language!=null">
+                and language = #{language}
+            </if>
+        </where>
+    </select>
+    <select id="queryProblemUserSubmit" resultType="java.lang.Integer">
+        select count(distinct userId) from submission where problemId = #{problemId} and contestId = #{contestId}
+    </select>
+    <select id="queryProblemUserAccept" resultType="java.lang.Integer">
+        select count(distinct userId) from submission where problemId = #{problemId} and contestId = #{contestId} and result = 2
+    </select>
+    <select id="queryProblemUserSolveByLang" resultType="java.lang.Integer">
+        select count(distinct userId) from submission where problemId = #{problemId} and contestId = #{contestId} and language = #{language} and result = 2
+    </select>
+    <select id="querySubmissionList" resultType="cn.edu.hunnu.acm.model.Submission">
+        select runId, submitTime, result, problemId, userId, timeUsed, memoryUsed, length, language from submission
+        <where>
+            <if test="sb.contestId!=null">
+                and contestId = #{sb.contestId}
+            </if>
+            <if test="sb.problemId!=null">
+                and problemId = #{sb.problemId}
+            </if>
+            <if test="sb.userId!=null and userId!=''">
+                and userId = #{sb.userId}
+            </if>
+            <if test="sb.result!=null">
+                and result = #{sb.result}
+            </if>
+            <if test="sb.language!=null">
+                and language = #{sb.language}
+            </if>
+        </where>
+        order by runId DESC limit #{offset},#{limit}
+    </select>
+    <!--    这个有一点bug....但是为了防止SQL语句效率过低先就这样...-->
+    <select id="queryProblemTopRank" resultType="cn.edu.hunnu.acm.model.Submission">
+        select runId, b.userId as userId, timeUsed, memoryUsed, length, language, submitTime from(
+        select userId, min(10000000000000000000 + timeUsed*100000000000 + submission.memoryUsed*100000 + length) as score
+        from submission
+        where problemId = #{problemId} and contestId = -1 and result = 2
+        <if test="language!=null">and language = #{language}</if>
+        group by userId
+        order by score
+        )c
+        inner join (
+        select runId, userId, timeUsed, memoryUsed, length, language, 10000000000000000000 + timeUsed*100000000000 + submission.memoryUsed*100000 + length as score, submitTime
+        from submission
+        where problemId = #{problemId} and contestId = -1 and result = 2
+        <if test="language!=null">and language = #{language}</if>
+        order by score
+        )b on b.userId=c.userId and b.score=c.score
+        order by c.score, runId
+        limit #{offset}, #{limit}
+    </select>
+    <select id="queryUserSolvedList" resultType="java.lang.Integer">
+        select distinct (problemId) from submission where userId = #{userId} and result = 2 and contestId = -1 order by problemId
+    </select>
+    <select id="queryUserTotalList" resultType="java.lang.Integer">
+        select distinct (problemId) from submission where userId = #{userId} and contestId = -1 order by problemId
+    </select>
+    <select id="queryContestRealTimeTotalList" resultType="cn.edu.hunnu.acm.model.Submission">
+        select userId, result, problemId, submitTime from submission where contestId = #{contestId} and submitTime &lt; #{endTime}
+    </select>
+    <insert id="insertSubmission" parameterType="cn.edu.hunnu.acm.model.Submission">
+        <selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="runId">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        insert into submission
+        (submitTime, result, problemId, contestId, userId, length, language, sourcecode)
+        values (NOW(), #{result}, #{problemId}, #{contestId}, #{userId}, #{length}, #{language}, #{sourcecode})
+    </insert>
+    <update id="updateSubmission" parameterType="cn.edu.hunnu.acm.model.Submission">
+        update submission
+        <trim prefix="set" suffixOverrides=",">
+            <if test="timeUsed!=null">timeUsed = #{timeUsed},</if>
+            <if test="memoryUsed!=null">memoryUsed = #{memoryUsed},</if>
+            <if test="result!=null">result = #{result},</if>
+            ext = #{ext},
+        </trim>
+        where runId = #{runId}
+    </update>
+</mapper>
