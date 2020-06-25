@@ -18,6 +18,7 @@ import java.util.Map;
 
 @Service("contestService")
 public class ContestServiceImpl implements ContestService {
+    @Override
     public Contest queryContestById(Integer contestId) {
         ContestMapper contestMapper = GetSqlSession.getSqlSession().getMapper(ContestMapper.class);
         Contest contest = null;
@@ -33,6 +34,7 @@ public class ContestServiceImpl implements ContestService {
         return contest;
     }
 
+    @Override
     public Map<String, Object> queryContestList(String keyword, int offset, int limit) {
         ContestMapper contestMapper = GetSqlSession.getSqlSession().getMapper(ContestMapper.class);
         Map<String, Object> map = new HashMap<>();
@@ -53,6 +55,7 @@ public class ContestServiceImpl implements ContestService {
         return map;
     }
 
+    @Override
     public Map<String, Object> queryContestRankList(Integer contestId) {
         Map<String, Object> map = new HashMap<>();
         ContestMapper contestMapper = GetSqlSession.getSqlSession().getMapper(ContestMapper.class);
@@ -67,13 +70,15 @@ public class ContestServiceImpl implements ContestService {
             map.put("contestProblemList", problemList);
             map.put("rankingList", rankingList);
         } catch (Exception e) {
-            GetSqlSession.close();
+            GetSqlSession.rollback();
+            throw new RuntimeException(e);
         } finally {
             GetSqlSession.close();
         }
         return map;
     }
 
+    @Override
     public void createContest(Contest contest) {
         ContestMapper contestMapper = GetSqlSession.getSqlSession().getMapper(ContestMapper.class);
         try{
@@ -87,6 +92,7 @@ public class ContestServiceImpl implements ContestService {
         }
     }
 
+    @Override
     public void updateContest(Contest contest) {
         ContestMapper contestMapper = GetSqlSession.getSqlSession().getMapper(ContestMapper.class);
         try {

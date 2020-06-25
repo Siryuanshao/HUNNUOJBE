@@ -54,43 +54,43 @@ public class GetDispatcher implements AbstractDispatcher {
             String param = request.getParameter(annotation != null ? annotation.value() : parameterName);
             if(parameterClass == HttpServletRequest.class) {
                 arguments[i] = request;
-            }else if(parameterClass == HttpServletResponse.class) {
+            } else if(parameterClass == HttpServletResponse.class) {
                 arguments[i] = response;
-            }else if(parameterClass == HttpSession.class) {
+            } else if(parameterClass == HttpSession.class) {
                 arguments[i] = request.getSession();
-            }else if(parameterClass == Integer.class) {
+            } else if(parameterClass == Integer.class) {
                 if(annotation != null) {
                     arguments[i] = ParamParse.parseIntWithAnnotation(param, annotation);
-                }else{
+                } else {
                     arguments[i] = ParamParse.parseInt(param);
                 }
-            }else if(parameterClass == Long.class) {
+            } else if(parameterClass == Long.class) {
                 if(annotation != null) {
                     arguments[i] = ParamParse.parseLongWithAnnotation(param, annotation);
-                }else{
+                } else {
                     arguments[i] = ParamParse.parseLong(param);
                 }
-            }else if(parameterClass == Short.class) {
+            } else if(parameterClass == Short.class) {
                 if(annotation != null) {
                     arguments[i] = ParamParse.parseShortWithAnnotation(param, annotation);
-                }else{
+                } else {
                     arguments[i] = ParamParse.parseShort(param);
                 }
-            }else if(parameterClass == Boolean.class) {
+            } else if(parameterClass == Boolean.class) {
                 if(annotation != null) {
                     arguments[i] = ParamParse.parseBooleanWithAnnotation(param, annotation);
-                }else{
+                } else {
                     arguments[i] = ParamParse.parseBoolean(param);
                 }
-            }else if(parameterClass == String.class) {
+            } else if(parameterClass == String.class) {
                 if(annotation != null) {
                     arguments[i] = ParamParse.filterStringWithAnnotation(param, annotation);
-                }else{
+                } else {
                     arguments[i] = ParamParse.filterString(param);
                 }
-            }else if(!parameterClass.isPrimitive()) {
+            } else if(!parameterClass.isPrimitive()) {
                 arguments[i] = ParamParse.parsePOJO(request, parameterClass);
-            }else {
+            } else {
                 throw new Exception("Missing handler for type: " + parameterClass);
             }
         }

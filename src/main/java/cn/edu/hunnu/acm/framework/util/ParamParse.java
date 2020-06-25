@@ -12,9 +12,9 @@ public class ParamParse {
         String defaultValue = annotation.defaultValue();
         if(!annotation.defaultValue().isEmpty()) {
             return parseIntWithDef(str, defaultValue);
-        }else if(annotation.required()){
+        } else if(annotation.required()){
             return parseIntRequire(str);
-        }else{
+        } else {
             return parseInt(str);
         }
     }
@@ -43,9 +43,9 @@ public class ParamParse {
         String defaultValue = annotation.defaultValue();
         if(!annotation.defaultValue().isEmpty()) {
             return parseLongWithDef(str, defaultValue);
-        }else if(annotation.required()){
+        } else if(annotation.required()){
             return parseLongRequire(str);
-        }else{
+        } else {
             return parseLong(str);
         }
     }
@@ -74,9 +74,9 @@ public class ParamParse {
         String defaultValue = annotation.defaultValue();
         if(!annotation.defaultValue().isEmpty()) {
             return parseShortWithDef(str, defaultValue);
-        }else if(annotation.required()){
+        } else if(annotation.required()){
             return parseShortRequire(str);
-        }else{
+        } else {
             return parseShort(str);
         }
     }
@@ -105,9 +105,9 @@ public class ParamParse {
         String defaultValue = annotation.defaultValue();
         if(!annotation.defaultValue().isEmpty()) {
             return parseBooleanWithDef(str, defaultValue);
-        }else if(annotation.required()){
+        } else if(annotation.required()){
             return parseBooleanRequire(str);
-        }else{
+        } else {
             return parseBoolean(str);
         }
     }
@@ -131,9 +131,9 @@ public class ParamParse {
         String defaultValue = annotation.defaultValue();
         if(!annotation.defaultValue().isEmpty()) {
             return filterStringWithDef(str, defaultValue);
-        }else if(annotation.required()){
+        } else if(annotation.required()){
             return filterStringRequired(str);
-        }else{
+        } else {
             return filterString(str);
         }
     }
@@ -171,15 +171,15 @@ public class ParamParse {
 
             if(fieldType == Integer.class) {
                 field.set(instance, parseInt(param));
-            }else if(fieldType == Long.class){
+            } else if(fieldType == Long.class){
                 field.set(instance, parseLong(param));
-            }else if(fieldType == Short.class){
+            } else if(fieldType == Short.class){
                 field.set(instance, parseShort(param));
-            }else if(fieldType == Boolean.class){
+            } else if(fieldType == Boolean.class){
                 field.set(instance, parseBoolean(param));
-            }else if(fieldType == String.class) {
+            } else if(fieldType == String.class) {
                 field.set(instance, filterString(param));
-            }else {
+            } else {
                 throw new Exception("Missing handler for type: " + fieldType);
             }
         }

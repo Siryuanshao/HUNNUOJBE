@@ -13,6 +13,7 @@ import java.util.Map;
 
 @Service("announcementService")
 public class AnnouncementServiceImpl implements AnnouncementService {
+    @Override
     public Map<String, Object> getHomePage() {
         AnnouncementMapper announcementMapper = GetSqlSession.getSqlSession().getMapper(AnnouncementMapper.class);
         Map<String, Object> map = new HashMap<>();
@@ -33,6 +34,7 @@ public class AnnouncementServiceImpl implements AnnouncementService {
         return map;
     }
 
+    @Override
     public Announcement queryAnnouncementById(Integer newsId) {
         AnnouncementMapper announcementMapper = GetSqlSession.getSqlSession().getMapper(AnnouncementMapper.class);
         Announcement announcement = null;
@@ -48,6 +50,7 @@ public class AnnouncementServiceImpl implements AnnouncementService {
         return announcement;
     }
 
+    @Override
     public Map<String, Object> queryAnnouncementList(Short newsType, int offset, int limit) {
         AnnouncementMapper announcementMapper = GetSqlSession.getSqlSession().getMapper(AnnouncementMapper.class);
         Map<String, Object> map = new HashMap<>();
@@ -68,6 +71,7 @@ public class AnnouncementServiceImpl implements AnnouncementService {
         return map;
     }
 
+    @Override
     public List<Announcement> queryContestAnnouncementList(Integer contestId) {
         AnnouncementMapper announcementMapper = GetSqlSession.getSqlSession().getMapper(AnnouncementMapper.class);
         List<Announcement> contestAnnouncement = null;
@@ -83,6 +87,7 @@ public class AnnouncementServiceImpl implements AnnouncementService {
         return contestAnnouncement;
     }
 
+    @Override
     public void createAnnouncement(Announcement announcement) {
         AnnouncementMapper announcementMapper = GetSqlSession.getSqlSession().getMapper(AnnouncementMapper.class);
         try {
@@ -96,6 +101,7 @@ public class AnnouncementServiceImpl implements AnnouncementService {
         }
     }
 
+    @Override
     public void updateAnnouncement(Announcement announcement) {
         AnnouncementMapper announcementMapper = GetSqlSession.getSqlSession().getMapper(AnnouncementMapper.class);
         try{

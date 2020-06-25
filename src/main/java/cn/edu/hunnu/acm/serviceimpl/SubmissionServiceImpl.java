@@ -16,6 +16,7 @@ import java.util.Map;
 
 @Service("submissionService")
 public class SubmissionServiceImpl implements SubmissionService {
+    @Override
     public Submission querySubmissionById(Integer submissionId) {
         SubmissionMapper submissionMapper = GetSqlSession.getSqlSession().getMapper(SubmissionMapper.class);
         Submission submission = null;
@@ -31,6 +32,7 @@ public class SubmissionServiceImpl implements SubmissionService {
         return submission;
     }
 
+    @Override
     public Map<String, Object> querySubmissionList(Submission submission, int offset, int limit) {
         SubmissionMapper submissionMapper = GetSqlSession.getSqlSession().getMapper(SubmissionMapper.class);
         Map<String, Object> map = new HashMap<>();
@@ -49,6 +51,7 @@ public class SubmissionServiceImpl implements SubmissionService {
         return map;
     }
 
+    @Override
     public Map<String, Object> queryProblemSummary(Integer problemId, Short language, int offset, int limit) {
         SubmissionMapper submissionMapper = GetSqlSession.getSqlSession().getMapper(SubmissionMapper.class);
         Map<String, Object> map = new HashMap<>();
@@ -91,6 +94,7 @@ public class SubmissionServiceImpl implements SubmissionService {
         return map;
     }
 
+    @Override
     public Integer createSubmission(Submission submission) {
         SubmissionMapper submissionMapper = GetSqlSession.getSqlSession().getMapper(SubmissionMapper.class);
         UserMapper userMapper = GetSqlSession.getSqlSession().getMapper(UserMapper.class);
@@ -111,6 +115,7 @@ public class SubmissionServiceImpl implements SubmissionService {
         return submissionId;
     }
 
+    @Override
     public void updateSubmission(Submission submission) {
         SubmissionMapper submissionMapper = GetSqlSession.getSqlSession().getMapper(SubmissionMapper.class);
         UserMapper userMapper = GetSqlSession.getSqlSession().getMapper(UserMapper.class);

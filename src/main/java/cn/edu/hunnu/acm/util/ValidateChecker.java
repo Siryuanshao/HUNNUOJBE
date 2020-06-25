@@ -5,6 +5,7 @@ import cn.edu.hunnu.acm.model.*;
 public class ValidateChecker {
     public static boolean checkAnnouncementValidate(Announcement announcement) {
         // required
+        if(announcement.getNewsType() == null) return false;
         if(announcement.getNewsType() < Constants.announcement_range.LRange || announcement.getNewsType() > Constants.announcement_range.RRange) return false;
         if(announcement.getNewsType() == Constants.announcementType.ContestType) {
             if(announcement.getContestId() == null) return false;
@@ -23,6 +24,10 @@ public class ValidateChecker {
         if(!TextUtils.checkDateFormat(contest.getStartTime())) return false;
         if(!TextUtils.checkDateFormat(contest.getEndTime())) return false;
         if(contest.getStartTime().compareTo(contest.getEndTime()) > 0) return false;
+
+        if(contest.getType() == Constants.contestType.PUBLIC) contest.setUserPrivilege("[]");
+        else if(!TextUtils.checkJSONArray(contest.getUserPrivilege())) return false;
+
         if(contest.getType() != null && (contest.getType() < Constants.contest_range.LRange || contest.getType() > Constants.contest_range.RRange)) return false;
 
         // with default

@@ -18,7 +18,7 @@ public class PrincipalAspect {
     public boolean LoginRequired(HttpServletRequest request, HttpServletResponse response, LoginRequired loginRequired) throws IOException{
         if(request.getSession().getAttribute("userId") != null) {
             return true;
-        }else {
+        } else {
             response.setContentType("application/json;charset=utf-8");
             String errMessage = String.format("{\"error\":true,\"err_info\":\"%s\"}", Constants.errorMessage.with_out_login);
             response.getWriter().print(errMessage);
@@ -31,10 +31,10 @@ public class PrincipalAspect {
         String userType = (String) request.getSession().getAttribute("userType");
         if(Constants.userType.SuperAdmin.equals(userType) || Constants.userType.Admin.equals(userType)) {
             return true;
-        }else{
+        } else {
             if(Constants.secure_token.equals(request.getHeader("secure_token"))) {
                 return true;
-            }else{
+            } else {
                 response.setContentType("application/json;charset=utf-8");
                 String errMessage = String.format("{\"error\":true,\"err_info\":\"%s\"}", Constants.errorMessage.have_not_permission);
                 response.getWriter().print(errMessage);
@@ -48,7 +48,7 @@ public class PrincipalAspect {
         String userType = (String) request.getSession().getAttribute("userType");
         if(Constants.userType.SuperAdmin.equals(userType)) {
             return true;
-        }else{
+        } else {
             response.setContentType("application/json;charset=utf-8");
             String errMessage = String.format("{\"error\":true,\"err_info\":\"%s\"}", Constants.errorMessage.have_not_permission);
             response.getWriter().print(errMessage);

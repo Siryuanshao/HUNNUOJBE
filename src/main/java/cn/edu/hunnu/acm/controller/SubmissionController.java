@@ -14,6 +14,7 @@ import cn.edu.hunnu.acm.util.Constants;
 import cn.edu.hunnu.acm.util.DataMap;
 import cn.edu.hunnu.acm.util.TextUtils;
 import cn.edu.hunnu.acm.util.ValidateChecker;
+import com.alibaba.fastjson.JSONArray;
 
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
@@ -35,9 +36,11 @@ public class SubmissionController {
     @Qualifier
     private UDPServerNotify udpServerNotify;
 
-    private boolean checkContestStart(Integer contestId) {
+    private boolean checkContestStart(String userId, Integer contestId) {
         Contest contest = contestService.queryContestById(contestId);
-        return contest != null && contest.getStartTime().compareTo(TextUtils.getFormatLocalDateTime()) <= 0;
+        return contest != null &&
+               contest.getStartTime().compareTo(TextUtils.getFormatLocalDateTime()) <= 0 &&
+               (contest.getType() != Constants.contestType.PRIVATE || JSONArray.parseArray(contest.getUserPrivilege()).contains(userId));
     }
 
     @GetMapping(value = "/submissionList", produces = "application/json;charset=utf-8")
@@ -110,11 +113,11 @@ public class SubmissionController {
                 dataMap.set("ext", submission.getExt());
 
                 return dataMap.success();
-            }else {
+            } else {
                 dataMap.setErrorInfo(Constants.errorMessage.have_not_permission);
                 return dataMap.fail();
             }
-        }else{
+        } else {
             dataMap.setErrorInfo(Constants.errorMessage.submission_not_found);
             return dataMap.fail();
         }
@@ -128,11 +131,11 @@ public class SubmissionController {
             dataMap.setErrorInfo(Constants.errorMessage.invalid_parameter);
             return dataMap.fail();
         }
-        if(submission.getContestId() != -1 && !checkContestStart(submission.getContestId())) {
+        String userId = (String) session.getAttribute("userId");
+        if(submission.getContestId() != -1 && !checkContestStart(userId, submission.getContestId())) {
             dataMap.setErrorInfo(Constants.errorMessage.contest_not_start);
             return dataMap.fail();
         }
-        String userId = (String) session.getAttribute("userId");
         if(userId == null) {
             dataMap.setErrorInfo(Constants.errorMessage.invalid_session);
             return dataMap.fail();
@@ -165,7 +168,7 @@ public class SubmissionController {
             udpServerNotify.notifyServer(runRequest);
 
             return dataMap.success();
-        }else{
+        } else {
             dataMap.setErrorInfo(Constants.errorMessage.problem_not_found);
             return dataMap.fail();
         }

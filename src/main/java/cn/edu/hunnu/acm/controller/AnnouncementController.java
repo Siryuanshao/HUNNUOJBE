@@ -128,7 +128,7 @@ public class AnnouncementController {
             dataMap.set("content", announcement.getContent());
 
             return dataMap.success();
-        }else{
+        } else {
             dataMap.setErrorInfo(Constants.errorMessage.news_not_found);
             return dataMap.fail();
         }

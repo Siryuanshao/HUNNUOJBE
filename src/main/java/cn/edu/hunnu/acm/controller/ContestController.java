@@ -12,6 +12,7 @@ import cn.edu.hunnu.acm.service.SubmissionService;
 import cn.edu.hunnu.acm.util.Constants;
 import cn.edu.hunnu.acm.util.DataMap;
 import cn.edu.hunnu.acm.util.TextUtils;
+import com.alibaba.fastjson.JSONArray;
 
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
@@ -34,12 +35,13 @@ public class ContestController {
     private AnnouncementService announcementService;
 
 
-    private boolean checkContestViewPermission(String userType, Integer contestId) {
+    private boolean checkContestViewPermission(String userId, String userType, Integer contestId) {
         // 如果是管理员用户, 则无论什么时候都拥有查看权限
         boolean isAdmin = Constants.userType.SuperAdmin.equals(userType) || Constants.userType.Admin.equals(userType);
 
         Contest contest = contestService.queryContestById(contestId);
-        return contest != null && (isAdmin || contest.getStartTime().compareTo(TextUtils.getFormatLocalDateTime()) <= 0);
+        return contest != null && (isAdmin || (contest.getStartTime().compareTo(TextUtils.getFormatLocalDateTime()) <= 0 &&
+                        (contest.getType() != Constants.contestType.PRIVATE || JSONArray.parseArray(contest.getUserPrivilege()).contains(userId))));
     }
 
     @GetMapping(value = "/contestList", produces = "application/json;charset=utf-8")
@@ -71,9 +73,9 @@ public class ContestController {
 
                 if(now.compareTo(contest.getStartTime()) < 0) {
                     ct.put("status", Constants.contestStatus.Pending);
-                }else if(now.compareTo(contest.getEndTime()) > 0) {
+                } else if(now.compareTo(contest.getEndTime()) > 0) {
                     ct.put("status", Constants.contestStatus.Ending);
-                }else{
+                } else {
                     ct.put("status", Constants.contestStatus.Running);
                 }
                 contestArray.add(ct);
@@ -98,6 +100,7 @@ public class ContestController {
             dataMap.set("startTime", contest.getStartTime());
             dataMap.set("endTime", contest.getEndTime());
             dataMap.set("ext", contest.getExt());
+            dataMap.set("userPrivilege", contest.getUserPrivilege());
             return dataMap.success();
         } else {
             dataMap.setErrorInfo(Constants.errorMessage.contest_not_found);
@@ -113,12 +116,12 @@ public class ContestController {
             dataMap.setErrorInfo(Constants.errorMessage.contest_not_found);
             return dataMap.fail();
         }
+        String userId = (String) session.getAttribute("userId");
         String userType = (String) session.getAttribute("userType");
-        if(!checkContestViewPermission(userType, contestId)) {
+        if(!checkContestViewPermission(userId, userType, contestId)) {
             dataMap.setErrorInfo(Constants.errorMessage.contest_not_start);
             return dataMap.fail();
         }
-        String userId = (String) session.getAttribute("userId");
         Map<String, Object> problems = problemService.queryContestProblemList(contestId, userId);
         List<Problem> problemList = (List<Problem>) problems.get("problemList");
         List<Short> statusList = (List<Short>) problems.get("statusList");
@@ -150,8 +153,9 @@ public class ContestController {
             dataMap.setErrorInfo(Constants.errorMessage.contest_not_found);
             return dataMap.fail();
         }
+        String userId = (String) session.getAttribute("userId");
         String userType = (String) session.getAttribute("userType");
-        if(!checkContestViewPermission(userType, contestId)) {
+        if(!checkContestViewPermission(userId, userType, contestId)) {
             dataMap.setErrorInfo(Constants.errorMessage.contest_not_start);
             return dataMap.fail();
         }
@@ -251,7 +255,7 @@ public class ContestController {
 
                 if(adminRole || submission.getUserId().equals(userId)) {
                     sb.put("permission", true);
-                }else{
+                } else {
                     sb.put("permission", false);
                 }
 
@@ -271,8 +275,9 @@ public class ContestController {
             dataMap.setErrorInfo(Constants.errorMessage.contest_not_found);
             return dataMap.fail();
         }
+        String userId = (String) session.getAttribute("userId");
         String userType = (String) session.getAttribute("userType");
-        if(!checkContestViewPermission(userType, contestId)) {
+        if(!checkContestViewPermission(userId, userType, contestId)) {
             dataMap.setErrorInfo(Constants.errorMessage.contest_not_start);
             return dataMap.fail();
         }

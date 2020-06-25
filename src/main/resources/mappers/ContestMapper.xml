@@ -21,8 +21,8 @@
             keyColumn="contestId"
             keyProperty="contestId"
             parameterType="cn.edu.hunnu.acm.model.Contest">
-        insert into contest (title, startTime, endTime, type, ext)
-        values (#{title}, #{startTime}, #{endTime}, #{type}, #{ext})
+        insert into contest (title, startTime, endTime, type, ext, userPrivilege)
+        values (#{title}, #{startTime}, #{endTime}, #{type}, #{ext}, #{userPrivilege})
     </insert>
     <update id="updateContest" parameterType="cn.edu.hunnu.acm.model.Contest">
         update contest
@@ -32,6 +32,7 @@
             <if test="endTime!=null">endTime = #{endTime},</if>
             <if test="type!=null">type = #{type},</if>
             <if test="ext!=null">ext = #{ext},</if>
+            <if test="userPrivilege!=null">userPrivilege = #{userPrivilege},</if>
         </trim>
         where contestId = #{contestId}
     </update>

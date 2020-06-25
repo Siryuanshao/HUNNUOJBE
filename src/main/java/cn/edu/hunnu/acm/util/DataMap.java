@@ -46,7 +46,7 @@ public class DataMap {
     public String toString() {
        if(success) {
            return String.format("{\"error\":false,\"data\":%s}", data.toJSONString());
-       } else{
+       } else {
            return String.format("{\"error\":true,\"err_info\":\"%s\"}", err_info);
        }
     }

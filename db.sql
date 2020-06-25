@@ -43,6 +43,7 @@ CREATE TABLE `contest` (
   `endTime` datetime NOT NULL DEFAULT '2020-01-01 00:00:00',
   `type` tinyint(1) DEFAULT '0',
   `ext` text,
+  'userPrivilege' text NOT NULL default '[]',
   PRIMARY KEY (`contestId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 

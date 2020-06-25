@@ -13,6 +13,8 @@ public class Contest {
 
     private String ext;
 
+    private String userPrivilege;
+
     public Integer getContestId() {
         return contestId;
     }
@@ -59,5 +61,13 @@ public class Contest {
 
     public void setExt(String ext) {
         this.ext = ext;
+    }
+
+    public String getUserPrivilege() {
+        return userPrivilege;
+    }
+
+    public void setUserPrivilege(String userPrivilege) {
+        this.userPrivilege = userPrivilege;
     }
 }

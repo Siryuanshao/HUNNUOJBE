@@ -165,7 +165,7 @@ public class DispatcherServlet extends HttpServlet {
                             getMappings.put(mapping.value(), new GetDispatcher(instance, method, mapping.produces()));
                             System.err.printf("Found GET: {%s} => {%s}\n", mapping.value(), method);
                             pathList.add(mapping.value());
-                        }else if(annotation instanceof PostMapping) {
+                        } else if(annotation instanceof PostMapping) {
                             PostMapping mapping = (PostMapping)annotation;
                             postMappings.put(mapping.value(), new PostDispatcher(instance, method, mapping.produces()));
                             System.err.printf("Found POST: {%s} => {%s}\n", mapping.value(), method);

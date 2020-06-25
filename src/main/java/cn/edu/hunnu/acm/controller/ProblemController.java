@@ -84,7 +84,7 @@ public class ProblemController {
             dataMap.set("isSpj", problem.getSpj());
 
             return dataMap.success();
-        }else{
+        } else {
             dataMap.setErrorInfo(Constants.errorMessage.problem_not_found);
             return dataMap.fail();
         }

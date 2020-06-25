@@ -1,5 +1,7 @@
 package cn.edu.hunnu.acm.util;
 
+import com.alibaba.fastjson.JSONArray;
+
 import java.io.File;
 import java.lang.reflect.Field;
 import java.time.LocalDateTime;
@@ -47,6 +49,15 @@ public class TextUtils {
         if(date == null) return false;
         try {
             LocalDateTime.parse(date, formatter);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    public static boolean checkJSONArray(String text) {
+        try {
+            JSONArray.parseArray(text);
             return true;
         } catch (Exception e) {
             return false;

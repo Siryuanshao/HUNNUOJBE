@@ -16,6 +16,7 @@ import java.util.Map;
 
 @Service("problemService")
 public class ProblemServiceImpl implements ProblemService {
+    @Override
     public Problem queryProblemById(Integer problemId, Integer contestId) {
         ProblemMapper problemMapper = GetSqlSession.getSqlSession().getMapper(ProblemMapper.class);
         Problem problem = null;
@@ -31,6 +32,7 @@ public class ProblemServiceImpl implements ProblemService {
         return problem;
     }
 
+    @Override
     public Problem checkProblemExist(Integer problemId, Integer contestId) {
         ProblemMapper problemMapper = GetSqlSession.getSqlSession().getMapper(ProblemMapper.class);
         Problem exist = null;
@@ -46,6 +48,7 @@ public class ProblemServiceImpl implements ProblemService {
         return exist;
     }
 
+    @Override
     public Map<String, Object> queryProblemList(String keyword, int offset, int limit, String userId) {
         ProblemMapper problemMapper = GetSqlSession.getSqlSession().getMapper(ProblemMapper.class);
         SubmissionMapper submissionMapper = GetSqlSession.getSqlSession().getMapper(SubmissionMapper.class);
@@ -87,6 +90,7 @@ public class ProblemServiceImpl implements ProblemService {
         return map;
     }
 
+    @Override
     public Map<String, Object> queryContestProblemList(Integer contestId, String userId) {
         ProblemMapper problemMapper = GetSqlSession.getSqlSession().getMapper(ProblemMapper.class);
         SubmissionMapper submissionMapper = GetSqlSession.getSqlSession().getMapper(SubmissionMapper.class);
@@ -124,6 +128,7 @@ public class ProblemServiceImpl implements ProblemService {
         return map;
     }
 
+    @Override
     public void createProblem(Problem problem) {
         ProblemMapper problemMapper = GetSqlSession.getSqlSession().getMapper(ProblemMapper.class);
         try {
@@ -137,6 +142,7 @@ public class ProblemServiceImpl implements ProblemService {
         }
     }
 
+    @Override
     public void updateProblem(Problem problem) {
         ProblemMapper problemMapper = GetSqlSession.getSqlSession().getMapper(ProblemMapper.class);
         try {

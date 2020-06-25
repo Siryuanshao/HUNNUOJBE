@@ -29,7 +29,7 @@ public class HttpServletRequestExtend extends HttpServletRequestWrapper {
         this.request = request;
         if(contentType.startsWith("application/x-www-form-urlencoded")) {
             this.contentType = ContentType.FORM;
-        }else if(contentType.startsWith("application/json")) {
+        } else if(contentType.startsWith("application/json")) {
             this.contentType = ContentType.JSON;
             InputStream inputStream = request.getInputStream();
             ByteArrayOutputStream result = new ByteArrayOutputStream();
@@ -40,11 +40,11 @@ public class HttpServletRequestExtend extends HttpServletRequestWrapper {
             }
             this.data = JSONObject.parseObject(result.toString(StandardCharsets.UTF_8));
             result.close();
-        }else if(contentType.startsWith("multipart/form-data")) {
+        } else if(contentType.startsWith("multipart/form-data")) {
             this.contentType = ContentType.MULTIPART;
-        }else if(contentType.startsWith("text/plain")) {
+        } else if(contentType.startsWith("text/plain")) {
             this.contentType = ContentType.TEXT;
-        }else{
+        } else {
             this.contentType = ContentType.UNKNOWN;
         }
     }

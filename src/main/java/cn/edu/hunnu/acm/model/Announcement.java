@@ -25,7 +25,7 @@ public class Announcement {
         this.newsId = newsId;
     }
 
-    public short getNewsType() {
+    public Short getNewsType() {
         return newsType;
     }
 

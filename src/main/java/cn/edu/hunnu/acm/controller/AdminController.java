@@ -103,14 +103,8 @@ public class AdminController {
 
         DataMap dataMap = new DataMap();
 
-
-        if(ValidateChecker.checkAnnouncementValidate(announcement)) {
-            announcementService.updateAnnouncement(announcement);
-            return dataMap.success();
-        } else {
-            dataMap.setErrorInfo(Constants.errorMessage.invalid_parameter);
-            return dataMap.fail();
-        }
+        announcementService.updateAnnouncement(announcement);
+        return dataMap.success();
     }
 
     @AdminRequired
@@ -120,7 +114,7 @@ public class AdminController {
         if(ValidateChecker.checkContestValidate(contest)) {
             contestService.createContest(contest);
             return dataMap.success();
-        }else{
+        } else {
             dataMap.setErrorInfo(Constants.errorMessage.invalid_parameter);
             return dataMap.fail();
         }
@@ -133,7 +127,7 @@ public class AdminController {
         if(ValidateChecker.checkContestValidate(contest) && contest.getContestId() != null) {
             contestService.updateContest(contest);
             return dataMap.success();
-        }else{
+        } else {
             dataMap.setErrorInfo(Constants.errorMessage.invalid_parameter);
             return dataMap.fail();
         }
@@ -185,7 +179,7 @@ public class AdminController {
         if(ValidateChecker.checkProblemValidate(problem)) {
             problemService.updateProblem(problem);
             return dataMap.success();
-        }else{
+        } else {
             dataMap.setErrorInfo(Constants.errorMessage.invalid_parameter);
             return dataMap.fail();
         }

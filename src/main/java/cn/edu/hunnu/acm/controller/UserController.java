@@ -108,7 +108,7 @@ public class UserController {
 
         if(!ifExist) {
             return dataMap.success();
-        }else{
+        } else {
             dataMap.setErrorInfo(Constants.errorMessage.user_already_exist);
             return dataMap.fail();
         }
@@ -152,7 +152,7 @@ public class UserController {
             dataMap.set("attemptList", attemptList);
 
             return dataMap.success();
-        }else{
+        } else {
             dataMap.setErrorInfo(Constants.errorMessage.user_not_found);
             return dataMap.fail();
         }
@@ -205,7 +205,7 @@ public class UserController {
         if(user != null && user.getEmail() != null) {
             emailService.sendMailSimple(user);
             return dataMap.success();
-        }else{
+        } else {
             dataMap.setErrorInfo(Constants.errorMessage.email_does_not_match);
             return dataMap.fail();
         }
@@ -241,7 +241,7 @@ public class UserController {
         if(ValidateChecker.checkUserValidate(user)) {
             userService.updateProfile(user);
             return dataMap.success();
-        }else{
+        } else {
             dataMap.setErrorInfo(Constants.errorMessage.invalid_session);
             return dataMap.fail();
         }

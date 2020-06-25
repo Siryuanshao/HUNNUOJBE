@@ -14,6 +14,7 @@ import java.util.Map;
 
 @Service("userService")
 public class UserServiceImpl implements UserService {
+    @Override
     public User queryUserById(String userId) {
         UserMapper userMapper = GetSqlSession.getSqlSession().getMapper(UserMapper.class);
         User user = null;
@@ -29,6 +30,7 @@ public class UserServiceImpl implements UserService {
         return user;
     }
 
+    @Override
     public User checkLogin(String userId, String password) {
         UserMapper userMapper = GetSqlSession.getSqlSession().getMapper(UserMapper.class);
         User user = null;
@@ -51,16 +53,19 @@ public class UserServiceImpl implements UserService {
         return user;
     }
 
+    @Override
     public User checkEmail(String userId, String email) {
         User user = queryUserById(userId);
         if(user != null && !email.equals(user.getEmail())) return null;
         else return user;
     }
 
+    @Override
     public boolean checkUserExist(String userId) {
         return queryUserById(userId) != null;
     }
 
+    @Override
     public Map<String, Object> getProfile(String userId) {
         Map<String, Object> map = new HashMap<>();
         UserMapper userMapper = GetSqlSession.getSqlSession().getMapper(UserMapper.class);
@@ -86,6 +91,7 @@ public class UserServiceImpl implements UserService {
         return map;
     }
 
+    @Override
     public Map<String, Object> queryRankList(int offset, int limit) {
         UserMapper userMapper = GetSqlSession.getSqlSession().getMapper(UserMapper.class);
         Map<String, Object> map = new HashMap<>();
@@ -106,6 +112,7 @@ public class UserServiceImpl implements UserService {
         return map;
     }
 
+    @Override
     public void createUser(User user) {
         UserMapper userMapper = GetSqlSession.getSqlSession().getMapper(UserMapper.class);
         if(userMapper.queryUserById(user.getUserId()) == null) {
@@ -121,6 +128,7 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+    @Override
     public void updateProfile(User user) {
         UserMapper userMapper = GetSqlSession.getSqlSession().getMapper(UserMapper.class);
         try {
@@ -134,10 +142,12 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+    @Override
     public Boolean updatePassword(String userId, String oldPassword, String newPassword) {
         return updateUserAuth(userId, oldPassword, newPassword, null);
     }
 
+    @Override
     public Boolean updateEmail(String userId, String currentPassword, String newEmail) {
         return updateUserAuth(userId, currentPassword, null, newEmail);
     }
@@ -157,6 +167,7 @@ public class UserServiceImpl implements UserService {
         return updateOk;
     }
 
+    @Override
     public Boolean updateUserRole(String userId, String userType) {
         UserMapper userMapper = GetSqlSession.getSqlSession().getMapper(UserMapper.class);
         Boolean updateOk = false;

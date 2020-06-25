@@ -67,8 +67,8 @@ public class AlgorithmUtils {
     }
 
     private static long calculateMinutes(String startTime, String submitTime) {
-       LocalDateTime start = LocalDateTime.parse(startTime, formatter);
-       LocalDateTime submit = LocalDateTime.parse(submitTime, formatter);
+       LocalDateTime start = LocalDateTime.parse(startTime.substring(0, 19), formatter);
+       LocalDateTime submit = LocalDateTime.parse(submitTime.substring(0, 19), formatter);
        Duration duration = Duration.between(start, submit);
        return duration.toMinutes();
     }
@@ -127,7 +127,7 @@ public class AlgorithmUtils {
                             ranking.penalty += (progress.tryTime * addPenalty) + acceptTime;
                             ranking.accept++;
                             alreadyAC = true;
-                        }else {
+                        } else {
                             progress.status = Ranking.rankStatus.Attempted;
                             progress.tryTime++;
                         }
