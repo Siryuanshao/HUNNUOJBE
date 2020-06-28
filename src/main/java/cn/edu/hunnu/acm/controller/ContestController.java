@@ -124,7 +124,7 @@ public class ContestController {
         String userType = (String) session.getAttribute("userType");
         String errorMessage = checkContestViewPermission(userId, userType, contestId);
         if(errorMessage != null) {
-            dataMap.setErrorInfo(Constants.errorMessage.contest_not_start);
+            dataMap.setErrorInfo(errorMessage);
             return dataMap.fail();
         }
         Map<String, Object> problems = problemService.queryContestProblemList(contestId, userId);
@@ -162,7 +162,7 @@ public class ContestController {
         String userType = (String) session.getAttribute("userType");
         String errorMessage = checkContestViewPermission(userId, userType, contestId);
         if(errorMessage != null) {
-            dataMap.setErrorInfo(Constants.errorMessage.contest_not_start);
+            dataMap.setErrorInfo(errorMessage);
             return dataMap.fail();
         }
         Problem problem = problemService.queryProblemById(problemId, contestId);
