@@ -97,8 +97,8 @@ public class ContestController {
             dataMap.set("contestId", contest.getContestId());
             dataMap.set("title", contest.getTitle());
             dataMap.set("type", contest.getType());
-            dataMap.set("startTime", contest.getStartTime());
-            dataMap.set("endTime", contest.getEndTime());
+            dataMap.set("startTime", contest.getStartTime().substring(0, 19));
+            dataMap.set("endTime", contest.getEndTime().substring(0, 19));
             dataMap.set("ext", contest.getExt());
             dataMap.set("userPrivilege", contest.getUserPrivilege());
             return dataMap.success();
