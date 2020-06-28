@@ -35,13 +35,17 @@ public class ContestController {
     private AnnouncementService announcementService;
 
 
-    private boolean checkContestViewPermission(String userId, String userType, Integer contestId) {
+    private String checkContestViewPermission(String userId, String userType, Integer contestId) {
         // 如果是管理员用户, 则无论什么时候都拥有查看权限
         boolean isAdmin = Constants.userType.SuperAdmin.equals(userType) || Constants.userType.Admin.equals(userType);
 
         Contest contest = contestService.queryContestById(contestId);
-        return contest != null && (isAdmin || (contest.getStartTime().compareTo(TextUtils.getFormatLocalDateTime()) <= 0 &&
-                        (contest.getType() != Constants.contestType.PRIVATE || JSONArray.parseArray(contest.getUserPrivilege()).contains(userId))));
+
+        if(contest == null) return Constants.errorMessage.contest_not_found;
+        else if(isAdmin) return null;
+        else if(contest.getStartTime().compareTo(TextUtils.getFormatLocalDateTime()) > 0) return Constants.errorMessage.contest_not_start;
+        else if(contest.getType().equals(Constants.contestType.PRIVATE) && !JSONArray.parseArray(contest.getUserPrivilege()).contains(userId)) return Constants.errorMessage.have_not_permission;
+        else return null;
     }
 
     @GetMapping(value = "/contestList", produces = "application/json;charset=utf-8")
@@ -118,7 +122,8 @@ public class ContestController {
         }
         String userId = (String) session.getAttribute("userId");
         String userType = (String) session.getAttribute("userType");
-        if(!checkContestViewPermission(userId, userType, contestId)) {
+        String errorMessage = checkContestViewPermission(userId, userType, contestId);
+        if(errorMessage != null) {
             dataMap.setErrorInfo(Constants.errorMessage.contest_not_start);
             return dataMap.fail();
         }
@@ -155,7 +160,8 @@ public class ContestController {
         }
         String userId = (String) session.getAttribute("userId");
         String userType = (String) session.getAttribute("userType");
-        if(!checkContestViewPermission(userId, userType, contestId)) {
+        String errorMessage = checkContestViewPermission(userId, userType, contestId);
+        if(errorMessage != null) {
             dataMap.setErrorInfo(Constants.errorMessage.contest_not_start);
             return dataMap.fail();
         }
@@ -267,18 +273,11 @@ public class ContestController {
     }
 
     @GetMapping(value = "/contest/rankList", produces = "application/json;charset=utf-8")
-    public DataMap getContestRankList(HttpSession session,
-                                      @RequestParam("contestId") Integer contestId) {
+    public DataMap getContestRankList(@RequestParam("contestId") Integer contestId) {
         DataMap dataMap = new DataMap();
 
         if(contestId <= 0) {
             dataMap.setErrorInfo(Constants.errorMessage.contest_not_found);
-            return dataMap.fail();
-        }
-        String userId = (String) session.getAttribute("userId");
-        String userType = (String) session.getAttribute("userType");
-        if(!checkContestViewPermission(userId, userType, contestId)) {
-            dataMap.setErrorInfo(Constants.errorMessage.contest_not_start);
             return dataMap.fail();
         }
 
