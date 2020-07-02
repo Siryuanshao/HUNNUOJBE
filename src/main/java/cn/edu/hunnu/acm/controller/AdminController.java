@@ -233,6 +233,11 @@ public class AdminController {
         DataMap dataMap = new DataMap();
         Submission submission = submissionService.querySubmissionById(runId);
 
+        if(submission == null) {
+            dataMap.setErrorInfo(Constants.errorMessage.submission_not_found);
+            return dataMap.fail();
+        }
+
         Problem simpleProblem = null;
 
         simpleProblem = problemService.checkProblemExist(submission.getProblemId(), submission.getContestId());
