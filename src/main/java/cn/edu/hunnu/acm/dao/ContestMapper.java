@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface ContestMapper {
     Contest queryContestById(Integer contestId);
-    Integer queryContestCount(String keyword);
+    Integer queryContestCount(@Param("keyword") String keyword);
     List<Contest> queryContestList(@Param("keyword") String keyword,
                                    @Param("offset") int offset,
                                    @Param("limit") int limit);

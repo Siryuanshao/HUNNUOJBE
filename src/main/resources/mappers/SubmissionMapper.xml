@@ -42,7 +42,7 @@
             <if test="sb.problemId!=null">
                 and problemId = #{sb.problemId}
             </if>
-            <if test="sb.userId!=null and userId!=''">
+            <if test="sb.userId!=null and sb.userId!=''">
                 and userId = #{sb.userId}
             </if>
             <if test="sb.result!=null">
