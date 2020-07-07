@@ -127,7 +127,7 @@ public class ProblemController {
                 sb.put("memoryUsed", submission.getMemoryUsed());
                 sb.put("language", submission.getLanguage());
                 sb.put("length", submission.getLength());
-                sb.put("when", submission.getSubmitTime());
+                sb.put("when", submission.getSubmitTime().substring(0, 19));
 
                 submissionArray.add(sb);
             }

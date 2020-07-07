@@ -71,8 +71,8 @@ public class ContestController {
                 Map<String, Object> ct = new HashMap<>();
                 ct.put("contestId", contest.getContestId());
                 ct.put("title", contest.getTitle());
-                ct.put("startTime", contest.getStartTime());
-                ct.put("endTime", contest.getEndTime());
+                ct.put("startTime", contest.getStartTime().substring(0, 19));
+                ct.put("endTime", contest.getEndTime().substring(0, 19));
                 ct.put("type", contest.getType());
 
                 if(now.compareTo(contest.getStartTime()) < 0) {
@@ -209,8 +209,8 @@ public class ContestController {
                 ca.put("newsId", announcement.getNewsId());
                 ca.put("title", announcement.getTitle());
                 ca.put("creator", announcement.getCreator());
-                ca.put("createTime", announcement.getCreateTime());
-                ca.put("updateTime",announcement.getUpdateTime());
+                ca.put("createTime", announcement.getCreateTime().substring(0, 19));
+                ca.put("updateTime",announcement.getUpdateTime().substring(0, 19));
                 ca.put("content", announcement.getContent());
                 announceArray.add(ca);
             }
@@ -251,7 +251,7 @@ public class ContestController {
                 Map<String, Object> sb = new HashMap<>();
                 sb.put("submissionId", submission.getRunId());
                 sb.put("problemId", submission.getProblemId());
-                sb.put("when", submission.getSubmitTime());
+                sb.put("when", submission.getSubmitTime().substring(0, 19));
                 sb.put("status", submission.getResult());
                 sb.put("timeUsed", submission.getTimeUsed());
                 sb.put("memoryUsed", submission.getMemoryUsed());

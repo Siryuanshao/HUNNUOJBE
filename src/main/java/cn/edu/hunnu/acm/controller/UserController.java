@@ -134,8 +134,8 @@ public class UserController {
         if(user != null) {
             dataMap.set("userId", user.getUserId());
             dataMap.set("userName", user.getUserName());
-            dataMap.set("createTime", user.getCreateTime());
-            dataMap.set("lastLogin", user.getLastLogin());
+            dataMap.set("createTime", user.getCreateTime().substring(0, 19));
+            dataMap.set("lastLogin", user.getLastLogin().substring(0, 19));
             dataMap.set("school", user.getSchool());
             dataMap.set("grade", user.getGrade());
             dataMap.set("email", user.getEmail());

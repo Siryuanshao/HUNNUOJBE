@@ -66,7 +66,7 @@ public class SubmissionController {
                 Map<String, Object> sb = new HashMap<>();
                 sb.put("submissionId", submission.getRunId());
                 sb.put("problemId", submission.getProblemId());
-                sb.put("when", submission.getSubmitTime());
+                sb.put("when", submission.getSubmitTime().substring(0, 19));
                 sb.put("status", submission.getResult());
                 sb.put("timeUsed", submission.getTimeUsed());
                 sb.put("memoryUsed", submission.getMemoryUsed());
@@ -102,7 +102,7 @@ public class SubmissionController {
             if(isAdminRole || submission.getContestId() == -1 || userId.equals(submission.getUserId())) {
                 dataMap.set("submissionId", submission.getRunId());
                 dataMap.set("userId", submission.getUserId());
-                dataMap.set("when", submission.getSubmitTime());
+                dataMap.set("when", submission.getSubmitTime().substring(0, 19));
                 dataMap.set("status", submission.getResult());
 
                 dataMap.set("sourcecode", submission.getSourcecode());

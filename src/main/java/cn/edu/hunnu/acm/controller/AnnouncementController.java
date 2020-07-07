@@ -40,7 +40,7 @@ public class AnnouncementController {
                 Map<String, Object> rp = new HashMap<>();
                 rp.put("newsId", report.getNewsId());
                 rp.put("title", report.getTitle());
-                rp.put("updateTime", report.getUpdateTime());
+                rp.put("updateTime", report.getUpdateTime().substring(0, 19));
                 rpArray.add(rp);
             }
             reports.put("messages", rpArray);
@@ -55,7 +55,7 @@ public class AnnouncementController {
                 Map<String, Object> so = new HashMap<>();
                 so.put("newsId", solution.getNewsId());
                 so.put("title", solution.getTitle());
-                so.put("updateTime", solution.getUpdateTime());
+                so.put("updateTime", solution.getUpdateTime().substring(0, 19));
                 soArray.add(so);
             }
             solutions.put("messages", soArray);
@@ -104,8 +104,8 @@ public class AnnouncementController {
                 ns.put("newsId", announcement.getNewsId());
                 ns.put("title", announcement.getTitle());
                 ns.put("creator", announcement.getCreator());
-                ns.put("createTime", announcement.getCreateTime());
-                ns.put("updateTime",announcement.getUpdateTime());
+                ns.put("createTime", announcement.getCreateTime().substring(0, 19));
+                ns.put("updateTime",announcement.getUpdateTime().substring(0, 19));
 
                 array.add(ns);
             }
@@ -123,8 +123,8 @@ public class AnnouncementController {
             dataMap.set("newsId", announcement.getNewsId());
             dataMap.set("title", announcement.getTitle());
             dataMap.set("creator", announcement.getCreator());
-            dataMap.set("createTime", announcement.getCreateTime());
-            dataMap.set("updateTime", announcement.getUpdateTime());
+            dataMap.set("createTime", announcement.getCreateTime().substring(0, 19));
+            dataMap.set("updateTime", announcement.getUpdateTime().substring(0, 19));
             dataMap.set("content", announcement.getContent());
 
             return dataMap.success();
