@@ -70,7 +70,7 @@ public class Constants {
     }
 
     public static class pagination {
-        public static final int rankLimit = 100;
+        public static final int rankLimit = 30;
         public static final int newsLimit = 10;
         public static final int userLimit = 30;
         public static final int discussLimit = 30;
