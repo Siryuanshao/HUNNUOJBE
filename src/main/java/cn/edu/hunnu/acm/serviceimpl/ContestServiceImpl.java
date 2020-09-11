@@ -64,7 +64,7 @@ public class ContestServiceImpl implements ContestService {
         try {
             Contest contest = contestMapper.queryContestById(contestId);
             List<Problem> problemList = problemMapper.queryContestProblemList(contestId);
-            List<Submission> submissionList = submissionMapper.queryContestRealTimeTotalList(contestId, contest.getEndTime());
+            List<Submission> submissionList = submissionMapper.queryContestRealTimeTotalList(contestId, contest.getStartTime(), contest.getEndTime());
             List<Ranking> rankingList = AlgorithmUtils.calculateRankings(contest, problemList, submissionList);
             GetSqlSession.commit();
             map.put("contestProblemList", problemList);

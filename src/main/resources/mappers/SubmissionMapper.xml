@@ -81,7 +81,7 @@
         select distinct (problemId) from submission where userId = #{userId} and contestId = -1 order by problemId
     </select>
     <select id="queryContestRealTimeTotalList" resultType="cn.edu.hunnu.acm.model.Submission">
-        select userId, result, problemId, submitTime from submission where contestId = #{contestId} and submitTime &lt; #{endTime}
+        select userId, result, problemId, submitTime from submission where contestId = #{contestId} and submitTime &gt;= #{startTime} and submitTime &lt; #{endTime}
     </select>
     <insert id="insertSubmission" parameterType="cn.edu.hunnu.acm.model.Submission">
         <selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="runId">

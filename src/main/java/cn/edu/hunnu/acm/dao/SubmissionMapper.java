@@ -21,6 +21,7 @@ public interface SubmissionMapper {
     List<Integer> queryUserSolvedList(String userId);
     List<Integer> queryUserTotalList(String userId);
     List<Submission> queryContestRealTimeTotalList(@Param("contestId") Integer contestId,
+                                                   @Param("startTime") String startTime,
                                                    @Param("endTime") String endTime);
     void insertSubmission(Submission submission);
     void updateSubmission(Submission submission);
