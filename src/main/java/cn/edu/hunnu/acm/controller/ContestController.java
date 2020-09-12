@@ -44,7 +44,7 @@ public class ContestController {
         if(contest == null) return Constants.errorMessage.contest_not_found;
         else if(isAdmin) return null;
         else if(contest.getStartTime().compareTo(TextUtils.getFormatLocalDateTime()) > 0) return Constants.errorMessage.contest_not_start;
-        else if(contest.getType().equals(Constants.contestType.PRIVATE) && userId != null && !JSONArray.parseArray(contest.getUserPrivilege()).contains(userId)) return Constants.errorMessage.have_not_permission;
+        else if(contest.getType().equals(Constants.contestType.PRIVATE) && (userId == null || !JSONArray.parseArray(contest.getUserPrivilege()).contains(userId))) return Constants.errorMessage.have_not_permission;
         else return null;
     }
 
